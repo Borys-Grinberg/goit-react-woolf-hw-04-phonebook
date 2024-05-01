@@ -6,15 +6,11 @@ import { nanoid } from 'nanoid';
 import styles from './App.module.css';
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
+  const [contacts, setContacts] = useState(() => {
     const savedContacts = localStorage.getItem('contacts');
-    if (savedContacts) {
-      setContacts(JSON.parse(savedContacts));
-    }
-  }, []);
+    return savedContacts ? JSON.parse(savedContacts) : [];
+  });
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -56,7 +52,7 @@ const App = () => {
   return (
     <div className={styles.container}>
       <h1>Phonebook</h1>
-      <ContactForm addContact={addContact} contacts={contacts} />
+      <ContactForm addContact={addContact} />
 
       <h2>Contacts</h2>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
